@@ -217,6 +217,23 @@ a {
   border-radius: 18px;
 }
 
+.cta-banner {
+  text-align: center;
+}
+
+.cta-link {
+  display: inline-block;
+}
+
+.cta-banner img {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  display: block;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(112, 184, 224, 0.2);
+}
+
 .policy {
   max-width: 960px;
   margin: 0 auto;
