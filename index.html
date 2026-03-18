@@ -26,7 +26,7 @@
           <div>
             <h1>A gentle nudge to call home.</h1>
             <p>
-              Call Your Mom keeps your family check-in streak alive with calm reminders, a clean
+              Call Your Mom App keeps your family check-in streak alive with calm reminders, a clean
               check-in button, and just enough structure to make reaching out easy.
             </p>
             <div class="cta-row">
@@ -36,14 +36,16 @@
               <a class="button secondary" href="features.html">See how it works</a>
             </div>
           </div>
-            <div class="hero-card">
-              <h3>Built for focus</h3>
-              <ul>
-              <li>One-tap check-ins to confirm you called.</li>
-              <li>24-hour cadence with escalating reminders.</li>
-              <li>Automatic SMS after 48 hours if overdue.</li>
-              </ul>
+          <div class="hero-card hero-video-card">
+            <div class="hero-video-wrap">
+              <video id="heroCtaVideo" class="hero-video" preload="metadata" playsinline>
+                <source src="styles/hero_cta.mp4" type="video/mp4" />
+              </video>
+              <button id="heroVideoPlayButton" class="hero-video-play" type="button" aria-label="Play video">
+                Play Video
+              </button>
             </div>
+          </div>
         </section>
 
         <section class="section">
@@ -95,6 +97,7 @@
             <a class="cta-link" href="https://play.google.com/store/apps/details?id=com.callyourmom.app" target="_blank" rel="noreferrer">
               <img src="styles/footer_call_to_action.png" alt="Get Call Your Mom on Google Play" />
             </a>
+            <img class="cta-badge" src="styles/footer_privacy_badge.png" alt="Privacy badge" />
           </div>
         </section>
       </main>
@@ -108,5 +111,50 @@
   </div>
 </footer>
     </div>
+    <script>
+      (function () {
+        const heroVideo = document.getElementById("heroCtaVideo");
+        const heroVideoPlayButton = document.getElementById("heroVideoPlayButton");
+        if (heroVideo && heroVideoPlayButton) {
+          const showPlay = function () {
+            heroVideoPlayButton.classList.remove("is-hidden");
+          };
+
+          const hidePlay = function () {
+            heroVideoPlayButton.classList.add("is-hidden");
+          };
+
+          heroVideoPlayButton.addEventListener("click", function () {
+            heroVideo.muted = false;
+            heroVideo.volume = 1;
+            const attempt = heroVideo.play();
+            if (attempt && typeof attempt.catch === "function") {
+              attempt.then(hidePlay).catch(showPlay);
+            } else {
+              hidePlay();
+            }
+          });
+
+          heroVideo.addEventListener("pause", showPlay);
+          heroVideo.addEventListener("ended", showPlay);
+          heroVideo.addEventListener("playing", hidePlay);
+        }
+
+        const ctaImage = document.querySelector(".cta-link img");
+        const badge = document.querySelector(".cta-badge");
+        if (!ctaImage || !badge) return;
+
+        const syncBadgeHeight = function () {
+          const ctaHeight = ctaImage.getBoundingClientRect().height;
+          if (ctaHeight > 0) {
+            badge.style.height = ctaHeight + "px";
+          }
+        };
+
+        ctaImage.addEventListener("load", syncBadgeHeight);
+        window.addEventListener("resize", syncBadgeHeight);
+        syncBadgeHeight();
+      })();
+    </script>
   </body>
 </html>

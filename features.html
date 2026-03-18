@@ -6,8 +6,20 @@
     <title>Features - Call Your Mom</title>
     <link rel="stylesheet" href="styles/site.css" />
   </head>
-  <body>
-    <div class="page">
+  <body class="features-loading">
+    <div id="featuresIntro" class="features-intro" aria-hidden="true">
+      <video
+        id="featuresIntroVideo"
+        class="features-intro-video"
+        src="styles/callyourmomintro.mp4"
+        playsinline
+        preload="auto"
+      ></video>
+      <button id="featuresIntroStart" class="features-intro-start" type="button">
+        Click to see features
+      </button>
+    </div>
+    <div class="page features-content">
       <header class="nav">
         <a class="brand" href="index.html">
           <img src="styles/Call_your_Mom_Logo_round.png" alt="Call Your Mom logo" />
@@ -94,5 +106,136 @@
   </div>
 </footer>
     </div>
+    <script>
+      (function () {
+        const body = document.body;
+        const intro = document.getElementById("featuresIntro");
+        const video = document.getElementById("featuresIntroVideo");
+        const startButton = document.getElementById("featuresIntroStart");
+        let didFinish = false;
+        let didDim = false;
+        let dimTimer = null;
+        let audioMuteTimer = null;
+        let finishTimer = null;
+        let autoPlayTimer = null;
+        let didStart = false;
+        let milestonesScheduled = false;
+
+        const triggerDim = function () {
+          if (didDim || didFinish) return;
+          didDim = true;
+          intro.classList.add("is-dimmed");
+          body.classList.remove("features-loading");
+        };
+
+        const schedulePlaybackMilestones = function () {
+          if (milestonesScheduled || didFinish) return;
+          milestonesScheduled = true;
+          if (dimTimer) {
+            window.clearTimeout(dimTimer);
+          }
+          if (audioMuteTimer) {
+            window.clearTimeout(audioMuteTimer);
+          }
+          if (finishTimer) {
+            window.clearTimeout(finishTimer);
+          }
+          dimTimer = window.setTimeout(function () {
+            triggerDim();
+          }, 6000);
+          audioMuteTimer = window.setTimeout(function () {
+            muteAudioInstantly();
+          }, 7000);
+          finishTimer = window.setTimeout(function () {
+            finishIntro();
+          }, 10000);
+        };
+
+        const muteAudioInstantly = function () {
+          if (didFinish || video.muted) return;
+          video.volume = 0;
+        };
+
+        const finishIntro = function () {
+          if (didFinish || !intro) return;
+          didFinish = true;
+          if (dimTimer) {
+            window.clearTimeout(dimTimer);
+          }
+          if (audioMuteTimer) {
+            window.clearTimeout(audioMuteTimer);
+          }
+          if (finishTimer) {
+            window.clearTimeout(finishTimer);
+          }
+          if (autoPlayTimer) {
+            window.clearTimeout(autoPlayTimer);
+          }
+          intro.classList.add("is-fading");
+          body.classList.remove("features-loading");
+          window.setTimeout(function () {
+            intro.remove();
+          }, 700);
+        };
+
+        if (!intro || !video) {
+          body.classList.remove("features-loading");
+          return;
+        }
+
+        const beginPlayback = function (forceMuted) {
+          if (didStart || didFinish) return;
+          didStart = true;
+          intro.classList.add("is-started");
+          video.muted = !!forceMuted;
+
+          const playAttempt = video.play();
+          if (!playAttempt || typeof playAttempt.then !== "function") {
+            schedulePlaybackMilestones();
+            return;
+          }
+          if (typeof playAttempt.catch === "function") {
+            playAttempt
+              .then(function () {
+                schedulePlaybackMilestones();
+              })
+              .catch(function () {
+                video.muted = true;
+                const mutedPlayAttempt = video.play();
+                if (!mutedPlayAttempt || typeof mutedPlayAttempt.then !== "function") {
+                  schedulePlaybackMilestones();
+                  return;
+                }
+                mutedPlayAttempt
+                  .then(function () {
+                    schedulePlaybackMilestones();
+                  })
+                  .catch(finishIntro);
+              });
+          } else {
+            schedulePlaybackMilestones();
+          }
+        };
+
+        autoPlayTimer = window.setTimeout(function () {
+          if (didStart || didFinish) return;
+          beginPlayback(true);
+        }, 5000);
+
+        video.addEventListener("ended", finishIntro);
+        video.addEventListener("error", finishIntro);
+        if (startButton) {
+          startButton.addEventListener("click", function () {
+            if (autoPlayTimer) {
+              window.clearTimeout(autoPlayTimer);
+              autoPlayTimer = null;
+            }
+            beginPlayback(false);
+          });
+        } else {
+          beginPlayback(true);
+        }
+      })();
+    </script>
   </body>
 </html>

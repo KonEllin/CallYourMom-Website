@@ -30,6 +30,85 @@ body {
   min-height: 100vh;
 }
 
+body.features-loading {
+  overflow: hidden;
+}
+
+.features-content {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s ease;
+}
+
+body.features-loading .features-content {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.features-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  opacity: 1;
+  transition: opacity 0.65s ease;
+}
+
+.features-intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  opacity: 1;
+  transition: opacity 0.7s ease;
+}
+
+.features-intro.is-dimmed::before {
+  opacity: 0.2;
+}
+
+.features-intro.is-fading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.features-intro-video {
+  position: relative;
+  z-index: 1;
+  width: min(980px, 96vw);
+  max-height: 512px;
+  height: auto;
+  object-fit: contain;
+}
+
+.features-intro-start {
+  position: absolute;
+  left: 50%;
+  bottom: 42px;
+  transform: translateX(-50%);
+  z-index: 2;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 20px;
+  background: #111111;
+  color: #ffffff;
+  font: 700 0.95rem/1 "Nunito", "Trebuchet MS", sans-serif;
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.features-intro-start:hover,
+.features-intro-start:focus {
+  transform: translateX(-50%) translateY(-1px);
+}
+
+.features-intro.is-started .features-intro-start {
+  opacity: 0;
+  pointer-events: none;
+}
+
 img {
   max-width: 100%;
   display: block;
@@ -164,6 +243,49 @@ a {
   color: var(--ink-700);
 }
 
+.hero-video-card {
+  padding: 14px;
+}
+
+.hero-video-wrap {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0f1218;
+}
+
+.hero-video {
+  width: 100%;
+  display: block;
+}
+
+.hero-video-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 22px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1d2230;
+  font: 700 0.95rem/1 "Nunito", "Trebuchet MS", sans-serif;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.hero-video-play:hover,
+.hero-video-play:focus {
+  transform: translate(-50%, -50%) translateY(-1px);
+}
+
+.hero-video-play.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .section {
   padding: 36px 6vw;
 }
@@ -218,20 +340,32 @@ a {
 }
 
 .cta-banner {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 12px;
 }
 
 .cta-link {
   display: inline-block;
 }
 
-.cta-banner img {
+.cta-link img {
   width: min(720px, 100%);
   margin: 0 auto;
   display: block;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow);
   border: 1px solid rgba(112, 184, 224, 0.2);
+}
+
+.cta-badge {
+  width: auto;
+  display: block;
+  border-radius: var(--radius-md);
+  box-shadow: none;
+  border: 0;
 }
 
 .policy {
