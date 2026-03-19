@@ -44,7 +44,8 @@
                 <source src="styles/hero_cta.mp4" type="video/mp4" />
               </video>
               <button id="heroVideoPlayButton" class="hero-video-play" type="button" aria-label="Play video">
-                Play Video
+                <img class="hero-video-play-icon" src="styles/play.png" alt="" aria-hidden="true" />
+                <span>Play Video</span>
               </button>
             </div>
           </div>
@@ -107,11 +108,11 @@
       </main>
 
       <footer class="footer">
-  <span>Copyright Call Your App 2026</span>
-  <div>
-    <a href="privacy.html">Privacy Policy</a>
-    <span> | </span>
-    <a href="terms.html">Terms of Service</a>
+  <a class="footer-copyright" href="https://callyourapp.com/"><img class="footer-icon footer-icon-brand" src="styles/Call_your_Mom_Logo_round.png" alt="" aria-hidden="true" /><span>&copy; Call Your App 2026</span></a>
+  <div class="footer-links">
+    <a href="privacy.html"><img class="footer-icon" src="styles/menu_privacy.png" alt="" aria-hidden="true" /><span>Privacy Policy</span></a>
+    <span class="footer-separator" aria-hidden="true">|</span>
+    <a href="terms.html"><img class="footer-icon" src="styles/menu_terms.png" alt="" aria-hidden="true" /><span>Terms of Service</span></a>
   </div>
 </footer>
     </div>
@@ -119,13 +120,20 @@
       (function () {
         const heroVideo = document.getElementById("heroCtaVideo");
         const heroVideoPlayButton = document.getElementById("heroVideoPlayButton");
+        const heroVideoWrap = heroVideo ? heroVideo.closest(".hero-video-wrap") : null;
         if (heroVideo && heroVideoPlayButton) {
           const showPlay = function () {
             heroVideoPlayButton.classList.remove("is-hidden");
+            if (heroVideoWrap) {
+              heroVideoWrap.classList.remove("is-playing");
+            }
           };
 
           const hidePlay = function () {
             heroVideoPlayButton.classList.add("is-hidden");
+            if (heroVideoWrap) {
+              heroVideoWrap.classList.add("is-playing");
+            }
           };
 
           heroVideoPlayButton.addEventListener("click", function () {
@@ -162,6 +170,9 @@
     </script>
   </body>
 </html>
+
+
+
 
 
 

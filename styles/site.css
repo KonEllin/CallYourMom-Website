@@ -263,6 +263,29 @@ a {
   background: #0f1218;
 }
 
+.hero-video-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.08) 0,
+      rgba(255, 255, 255, 0.08) 1px,
+      rgba(255, 255, 255, 0) 1px,
+      rgba(255, 255, 255, 0) 3px
+    ),
+    rgba(128, 128, 128, 0.5);
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.hero-video-wrap.is-playing::after {
+  opacity: 0;
+}
+
 .hero-video {
   width: 100%;
   display: block;
@@ -274,15 +297,30 @@ a {
   top: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
+  overflow: visible;
   border: 0;
-  border-radius: 999px;
-  padding: 12px 22px;
+  border-radius: 15px;
+  padding: 14px 22px 14px 56px;
   background: rgba(255, 255, 255, 0.92);
   color: #1d2230;
   font: 700 0.95rem/1 "Nunito", "Trebuchet MS", sans-serif;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
   transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.hero-video-play-icon {
+  position: absolute;
+  left: -24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 64px;
+  height: 64px;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.28));
 }
 
 .hero-video-play:hover,
@@ -436,13 +474,83 @@ a {
   background: rgba(255, 255, 255, 0.6);
 }
 
-.footer > div {
+.footer-links {
   margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.footer a {
-  color: var(--ink-700);
-  font-weight: 600;
+.footer-copyright,
+.footer-links a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition: transform 0.22s ease, color 0.22s ease, text-shadow 0.22s ease;
+}
+
+.footer-copyright {
+  color: #6f96b4;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72), 0 -1px 0 rgba(130, 174, 205, 0.28);
+  cursor: pointer;
+}
+
+.footer-links a {
+  color: #4b7394;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68), 0 -1px 0 rgba(110, 155, 190, 0.34);
+}
+
+.footer-copyright::after,
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: -3px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(112, 184, 224, 0.25), rgba(112, 184, 224, 0.85), rgba(112, 184, 224, 0.25));
+  transform: scaleX(0.2);
+  opacity: 0;
+  transition: transform 0.24s ease, opacity 0.24s ease;
+}
+
+.footer-copyright:hover,
+.footer-copyright:focus-visible,
+.footer-links a:hover,
+.footer-links a:focus-visible {
+  transform: translateY(-1px);
+  color: #3f7094;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.78), 0 -1px 0 rgba(96, 146, 182, 0.38);
+}
+
+.footer-copyright:hover::after,
+.footer-copyright:focus-visible::after,
+.footer-links a:hover::after,
+.footer-links a:focus-visible::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.footer-separator {
+  color: #7ea4bf;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
+  font-weight: 700;
+}
+
+.footer-icon {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+}
+
+.footer-icon-brand {
+  width: 16px;
+  height: 16px;
+  flex-basis: 16px;
 }
 
 @media (max-width: 720px) {
@@ -461,7 +569,7 @@ a {
     text-align: center;
   }
 
-  .footer > div {
+  .footer-links {
     margin-left: 0;
   }
 }
