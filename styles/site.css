@@ -277,7 +277,7 @@ a {
       rgba(255, 255, 255, 0) 1px,
       rgba(255, 255, 255, 0) 3px
     ),
-    rgba(128, 128, 128, 0.5);
+    rgba(128, 128, 128, 0.25);
   opacity: 1;
   transition: opacity 0.3s ease;
 }
@@ -293,9 +293,9 @@ a {
 
 .hero-video-play {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  left: 45px;
+  bottom: 30px;
+  transform: none;
   z-index: 2;
   overflow: visible;
   border: 0;
@@ -325,7 +325,7 @@ a {
 
 .hero-video-play:hover,
 .hero-video-play:focus {
-  transform: translate(-50%, -50%) translateY(-1px);
+  transform: translateY(-1px);
 }
 
 .hero-video-play.is-hidden {
